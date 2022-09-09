@@ -1,22 +1,24 @@
-"""SQLite adapter allowing to persist devices."""
-import sqlite3
-from typing import Any, Tuple
+"""Async SQLite adapter allowing to persist devices."""
+import aiosqlite
 
-con = sqlite3.connect("devices.db")
-cur = con.cursor()
+DEVICES_DB_FILE = 'devices.db'
 
-def init_switches_table() -> sqlite3.Cursor:
+
+async def init_switches_table():
   print('Initializing entity table(s)')
-  cur.execute("CREATE TABLE IF NOT EXISTS switches(name text NOT NULL, entity_id text NOT NULL, owner CHAR)")
+  db = await aiosqlite.connect(DEVICES_DB_FILE)
+  await db.execute("CREATE TABLE IF NOT EXISTS switches(name text NOT NULL PRIMARY KEY, entity_id text NOT NULL, owner CHAR)")
   print('Creating indexes')
-  cur.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_switches_name ON switches (name)")
+  await db.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_switches_name ON switches (name)")
 
-def register_entity(name: str, eid: str, owner: str) -> sqlite3.Cursor:
+async def register_entity(name: str, eid: str, owner: str) -> None:
   print(f"Saving entity: {name} - {eid}")
-  cur.execute("INSERT INTO switches VALUES(?, ?, ?)", (name, eid, owner))
-  con.commit()
+  async with aiosqlite.connect(DEVICES_DB_FILE) as db:
+    await db.execute("INSERT INTO switches VALUES(?, ?, ?)", (name, eid, owner))
+    await db.commit()
+    
   
-def get_entity_by_name(name: str) -> Any:
-  cur.execute(
-    "SELECT name, entity_id, owner FROM switches WHERE name = ?", (name,)
-    ).fetchone()
+async def get_entity_by_name(name: str):
+  async with aiosqlite.connect(DEVICES_DB_FILE) as db:
+    async with db.execute("SELECT name, entity_id, owner FROM switches WHERE name = ?", (name,)) as cursor:
+      return await cursor.fetchone()

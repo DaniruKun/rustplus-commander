@@ -1,2 +1,3 @@
 rustplus
 nest_asyncio
+aiosqlite
