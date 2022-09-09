@@ -12,11 +12,11 @@ It is built on top of [Rust+.py](https://rplus.ollieee.xyz)
 You will need to set these environment variables:
 
 - `RUST_SERVER_IP`: hostname or IP address of the target Rust server
-- `RUST_SERVER_PORT`: Rust server port, `28015` by default
+- `RUST_SERVER_PORT`: Rust+ server port, `28079` by default, you can find it in the FCM notification payload, see below
 - `STEAM_ID`: your Steam user ID
 - `RUST_PLAYER_TOKEN`: token used for authenticating you with Rust servers, read below
 
-How to get your Rust player token: <https://rplus.ollieee.xyz/getting-started/getting-player-details>
+How to get your Rust player token: <https://github.com/liamcottle/rustplus.js#using-the-command-line-tool>
 
 ## Running
 
