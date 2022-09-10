@@ -8,6 +8,7 @@ It is built on top of [Rust+.py](https://rplus.ollieee.xyz)
 - Python 3.6+
 - SQLite
 - A Steam account (and of course a copy of Rust)
+- Be part of an active Team
 
 You will need to set these environment variables:
 
@@ -15,6 +16,7 @@ You will need to set these environment variables:
 - `RUST_SERVER_PORT`: Rust+ server port, `28079` by default, you can find it in the FCM notification payload, see below
 - `STEAM_ID`: your Steam user ID
 - `RUST_PLAYER_TOKEN`: token used for authenticating you with Rust servers, read below
+- `RESP_PREFIX`: set custom prefix for messages sent by the commander in chat
 
 How to get your Rust player token: <https://github.com/liamcottle/rustplus.js#using-the-command-line-tool>
 

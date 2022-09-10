@@ -11,7 +11,7 @@ PORT = os.getenv('RUST_SERVER_PORT') or '28015'
 STEAMID = int(os.getenv('STEAM_ID'))
 PLAYERTOKEN = int(os.getenv('RUST_PLAYER_TOKEN'))
 
-RESP_PREFIX = os.getenv('RESP_PREFIX') or "COMMANDER>> "
+RESP_PREFIX = os.getenv('RESP_PREFIX') or "CMDR>> "
 
 logging.basicConfig(level=logging.INFO)
 
@@ -43,7 +43,7 @@ async def register(command: Command):
     await rust_socket.send_team_message(message)
 
 
-@rust_socket.command
+@rust_socket.command(aliases=['turn-on', 'turnon'])
 async def turn_on(command: Command):
     name, *_ = command.args
     message: str
@@ -59,7 +59,7 @@ async def turn_on(command: Command):
     await rust_socket.send_team_message(message)
 
 
-@rust_socket.command
+@rust_socket.command(aliases=['turn-off', 'turnoff'])
 async def turn_off(command: Command):
     name, *_ = command.args
     message: str
@@ -75,8 +75,8 @@ async def turn_off(command: Command):
     await rust_socket.send_team_message(message)
 
 
-@rust_socket.command
-async def list_all():
+@rust_socket.command(aliases=['list_devices'])
+async def list_all(_command: Command):
     message: str
 
     logging.info(f"Got list all request")
@@ -86,7 +86,30 @@ async def list_all():
     except:
         message = f"{RESP_PREFIX}Failed to list entities!"
     await rust_socket.send_team_message(message)
-    
+
+
+@rust_socket.command(aliases=['players'])
+async def players_online(_command: Command):
+    message: str
+    logging.info(f"Got get players online count request")
+    try:
+        server_info = await rust_socket.get_info()
+        message = f"{RESP_PREFIX}Players online: {server_info.players}"
+    except:
+        message = f"{RESP_PREFIX}Failed to get player count!"
+    await rust_socket.send_team_message(message)
+
+
+@rust_socket.command
+async def time(_command: Command):
+    message: str
+
+    try:
+        rust_time = await rust_socket.get_time()
+        message = f"{RESP_PREFIX}Server time: {rust_time.time}"
+    except:
+        message = f"{RESP_PREFIX}Failed to get Rust server time!"
+    await rust_socket.send_team_message(message)
 
 
 async def main():
