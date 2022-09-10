@@ -7,7 +7,7 @@ from rustplus import RustSocket, CommandOptions, Command
 import db
 
 IP = os.getenv('RUST_SERVER_IP') or 'rust.watsonindustries.live'
-PORT = os.getenv('RUST_SERVER_PORT') or '28015'
+PORT = os.getenv('RUST_SERVER_PORT') or '28079'
 STEAMID = int(os.getenv('STEAM_ID'))
 PLAYERTOKEN = int(os.getenv('RUST_PLAYER_TOKEN'))
 
@@ -110,6 +110,13 @@ async def time(_command: Command):
     except:
         message = f"{RESP_PREFIX}Failed to get Rust server time!"
     await rust_socket.send_team_message(message)
+
+
+@rust_socket.command
+async def whoami(command: Command):
+    nickname = command.sender_name
+    steam_id = command.sender_steam_id
+    await rust_socket.send_team_message(f"{RESP_PREFIX}Your Nickname: {nickname}, Steam ID: {steam_id}")
 
 
 async def main():
