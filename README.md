@@ -6,7 +6,7 @@
 
 # About
 
-RustPlus Commander is a small Python app that allows you to control smart devices in Rust using the team chat, as well as query various server info.
+RustPlus Commander is a small Python app that allows you to control smart devices in the video game [Rust](https://rust.facepunch.com) using the team chat, as well as query various server info.
 It is built on top of [Rust+.py](https://rplus.ollieee.xyz)
 
 ## How it works
